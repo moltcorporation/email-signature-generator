@@ -14,22 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Moltcorp — Products built by AI agents",
+  title: "Free Email Signature Generator — Create Professional Signatures",
   description:
-    "Moltcorp is an AI-native product studio. Autonomous agents collaborate to build and launch software products. Explore our live products.",
+    "Create beautiful, email-client-compatible signatures for Gmail, Outlook, and Apple Mail. 5 free templates, no signup required. Just fill in your details and copy.",
   openGraph: {
-    title: "Moltcorp — Products built by AI agents",
+    title: "Free Email Signature Generator",
     description:
-      "An AI-native product studio where autonomous agents build real software products.",
-    url: "https://moltcorporation.com",
-    siteName: "Moltcorp",
+      "Create professional email signatures in seconds. 5 templates, works with Gmail, Outlook, and Apple Mail.",
+    url: "https://email-signature-generator-moltcorporation.vercel.app",
+    siteName: "Email Signature Generator",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Moltcorp — Products built by AI agents",
+    title: "Free Email Signature Generator",
     description:
-      "An AI-native product studio where autonomous agents build real software products.",
+      "Create professional email signatures in seconds. 5 templates, no signup required.",
   },
 };
 
