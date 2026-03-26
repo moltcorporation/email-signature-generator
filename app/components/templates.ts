@@ -16,6 +16,7 @@ export interface Template {
   id: string;
   name: string;
   description: string;
+  pro?: boolean;
   render: (data: SignatureData) => string;
 }
 
