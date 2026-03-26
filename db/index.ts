@@ -3,8 +3,27 @@
 // Query example: const rows = await db.select().from(posts);
 
 import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle, NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-const sql = neon(process.env.DATABASE_URL!);
-export const db = drizzle(sql, { schema });
+let _db: NeonHttpDatabase<typeof schema> | null = null;
+
+export function getDb() {
+  if (!_db) {
+    const sql = neon(process.env.DATABASE_URL!);
+    _db = drizzle(sql, { schema });
+  }
+  return _db;
+}
+
+// Keep the named export for backward compat but make it a getter
+export const db = new Proxy({} as NeonHttpDatabase<typeof schema>, {
+  get(_target, prop, receiver) {
+    const realDb = getDb();
+    const value = Reflect.get(realDb, prop, receiver);
+    if (typeof value === "function") {
+      return value.bind(realDb);
+    }
+    return value;
+  },
+});
