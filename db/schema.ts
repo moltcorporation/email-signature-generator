@@ -34,10 +34,38 @@ export const subscriptions = pgTable("subscriptions", {
 export const savedSignatures = pgTable("saved_signatures", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull().references(() => users.id),
+  teamId: integer("team_id").references(() => teams.id),
   name: text("name").notNull(),
   template: text("template").notNull(),
   fields: jsonb("fields").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Teams
+export const teams = pgTable("teams", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  ownerId: integer("owner_id").notNull().references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const teamMembers = pgTable("team_members", {
+  id: serial("id").primaryKey(),
+  teamId: integer("team_id").notNull().references(() => teams.id),
+  userId: integer("user_id").notNull().references(() => users.id),
+  role: text("role").notNull().default("member"), // "owner" | "member"
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const teamBranding = pgTable("team_branding", {
+  id: serial("id").primaryKey(),
+  teamId: integer("team_id").notNull().references(() => teams.id),
+  companyName: text("company_name").default(""),
+  logoUrl: text("logo_url").default(""),
+  primaryColor: text("primary_color").default("#4F46E5"),
+  secondaryColor: text("secondary_color").default("#6B7280"),
+  fontFamily: text("font_family").default("Arial, sans-serif"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 

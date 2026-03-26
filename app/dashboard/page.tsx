@@ -21,18 +21,31 @@ interface SavedSignature {
   updatedAt: string;
 }
 
+interface TeamMembership {
+  teamId: number;
+  role: string;
+  teamName: string;
+  ownerId: number;
+}
+
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [signatures, setSignatures] = useState<SavedSignature[]>([]);
+  const [teams, setTeams] = useState<TeamMembership[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateTeam, setShowCreateTeam] = useState(false);
+  const [newTeamName, setNewTeamName] = useState("");
+  const [createTeamMsg, setCreateTeamMsg] = useState("");
 
   useEffect(() => {
     Promise.all([
       fetch("/api/auth/me").then((r) => r.json()),
       fetch("/api/signatures").then((r) => r.json()).catch(() => ({ signatures: [] })),
-    ]).then(([meData, sigData]) => {
+      fetch("/api/teams").then((r) => r.json()).catch(() => ({ teams: [] })),
+    ]).then(([meData, sigData, teamData]) => {
       if (meData.user) setUser(meData.user);
       if (sigData.signatures) setSignatures(sigData.signatures);
+      if (teamData.teams) setTeams(teamData.teams);
       setLoading(false);
     });
   }, []);
@@ -52,6 +65,27 @@ export default function Dashboard() {
   const handleDelete = async (id: number) => {
     await fetch(`/api/signatures/${id}`, { method: "DELETE" });
     setSignatures((prev) => prev.filter((s) => s.id !== id));
+  };
+
+  const handleCreateTeam = async () => {
+    if (!newTeamName.trim()) return;
+    setCreateTeamMsg("");
+    const res = await fetch("/api/teams", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newTeamName.trim() }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setNewTeamName("");
+      setShowCreateTeam(false);
+      // Refresh teams
+      const teamRes = await fetch("/api/teams");
+      const teamData = await teamRes.json();
+      if (teamData.teams) setTeams(teamData.teams);
+    } else {
+      setCreateTeamMsg(data.error || "Failed to create team");
+    }
   };
 
   const handleLogout = async () => {
@@ -150,6 +184,73 @@ export default function Dashboard() {
             </div>
           )}
         </section>
+
+        {/* Teams Section */}
+        {user.isPro && (
+          <section className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Teams</h2>
+              <button
+                onClick={() => setShowCreateTeam(!showCreateTeam)}
+                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+              >
+                + Create Team
+              </button>
+            </div>
+
+            {showCreateTeam && (
+              <div className="flex items-center gap-2 mb-4">
+                <input
+                  type="text"
+                  value={newTeamName}
+                  onChange={(e) => setNewTeamName(e.target.value)}
+                  placeholder="Team name"
+                  className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  onKeyDown={(e) => e.key === "Enter" && handleCreateTeam()}
+                />
+                <button
+                  onClick={handleCreateTeam}
+                  className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700"
+                >
+                  Create
+                </button>
+                {createTeamMsg && (
+                  <span className="text-xs text-red-500">{createTeamMsg}</span>
+                )}
+              </div>
+            )}
+
+            {teams.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">
+                No teams yet. Create one to manage shared signatures.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {teams.map((t) => (
+                  <a
+                    key={t.teamId}
+                    href={`/dashboard/team/${t.teamId}`}
+                    className="flex items-center justify-between border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-900">{t.teamName}</span>
+                      <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${
+                        t.role === "owner"
+                          ? "text-amber-600 bg-amber-50"
+                          : "text-gray-500 bg-gray-100"
+                      }`}>
+                        {t.role}
+                      </span>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Saved Signatures */}
         {user.isPro && (
