@@ -50,6 +50,8 @@ export default function SignatureEditor() {
   const [user, setUser] = useState<User | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
+  const [upgradeError, setUpgradeError] = useState("");
+  const [upgrading, setUpgrading] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -130,16 +132,20 @@ export default function SignatureEditor() {
       setShowAuth(true);
       return;
     }
+    setUpgrading(true);
+    setUpgradeError("");
     try {
       const res = await fetch("/api/stripe/checkout", { method: "POST" });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        setUpgradeError(data.error || "Unable to start checkout. Please try again.");
       }
     } catch {
-      // Stripe not configured yet — show message
-      alert("Pro upgrade coming soon!");
+      setUpgradeError("Unable to connect to payment service. Please try again later.");
     }
+    setUpgrading(false);
   };
 
   const handleLogout = async () => {
@@ -201,9 +207,10 @@ export default function SignatureEditor() {
                 </button>
                 <button
                   onClick={handleUpgrade}
-                  className="px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                  disabled={upgrading}
+                  className="px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                 >
-                  Upgrade to Pro
+                  {upgrading ? "Loading…" : "Upgrade to Pro"}
                 </button>
               </>
             )}
@@ -286,10 +293,14 @@ export default function SignatureEditor() {
                   </p>
                   <button
                     onClick={handleUpgrade}
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                    disabled={upgrading}
+                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                   >
-                    Upgrade to Pro — $39/year
+                    {upgrading ? "Loading…" : "Upgrade to Pro — $39/year"}
                   </button>
+                  {upgradeError && (
+                    <p className="mt-2 text-sm text-red-600">{upgradeError}</p>
+                  )}
                 </div>
               )}
             </section>
