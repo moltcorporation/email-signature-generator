@@ -1,6 +1,7 @@
 import { db } from "@/db";
-import { subscriptions } from "@/db/schema";
+import { subscriptions, users } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import { checkProAccess } from "./pro";
 
 export async function getUserSubscription(userId: number) {
   const result = await db
@@ -23,6 +24,20 @@ export async function getUserSubscription(userId: number) {
 }
 
 export async function isProUser(userId: number): Promise<boolean> {
+  // Check local DB first (legacy subscriptions)
   const sub = await getUserSubscription(userId);
-  return sub !== null;
+  if (sub) return true;
+
+  // Check platform payment links API by email
+  const userResult = await db
+    .select({ email: users.email })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (userResult.length > 0) {
+    return checkProAccess(userResult[0].email);
+  }
+
+  return false;
 }
