@@ -50,6 +50,10 @@ export default function SignatureEditor() {
   const [user, setUser] = useState<User | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [upgradeEmail, setUpgradeEmail] = useState("");
+  const [upgradePlan, setUpgradePlan] = useState<"monthly" | "yearly">("yearly");
+  const [verifyError, setVerifyError] = useState("");
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,6 +61,20 @@ export default function SignatureEditor() {
       .then((r) => r.json())
       .then((d) => { if (d.user) setUser(d.user); })
       .catch(() => {});
+
+    // Check for stored Pro email (payment link flow)
+    const storedEmail = localStorage.getItem("proEmail");
+    if (storedEmail) {
+      setUpgradeEmail(storedEmail);
+      fetch(`/api/license?email=${encodeURIComponent(storedEmail)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.tier === "pro") {
+            setUser((prev) => prev ? { ...prev, isPro: true } : { id: 0, email: storedEmail, isPro: true });
+          }
+        })
+        .catch(() => {});
+    }
   }, []);
 
   const template = allTemplates.find((t) => t.id === templateId) || allTemplates[0];
@@ -125,21 +143,40 @@ export default function SignatureEditor() {
     setSaving(false);
   };
 
-  const handleUpgrade = async () => {
-    if (!user) {
-      setShowAuth(true);
-      return;
-    }
-    try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST" });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      // Stripe not configured yet — show message
-      alert("Pro upgrade coming soon!");
-    }
+  const PAYMENT_URLS = {
+    monthly: "https://buy.stripe.com/3cIeVd8FRe8F7Dv0jW3Nm0B",
+    yearly: "https://buy.stripe.com/8x2bJ1cW75C92jbeaM3Nm0C",
+  };
+
+  const handleUpgrade = () => {
+    if (user?.email) setUpgradeEmail(user.email);
+    setShowUpgrade(true);
+  };
+
+  const handleCheckout = () => {
+    if (!upgradeEmail.trim()) return;
+    const email = upgradeEmail.toLowerCase().trim();
+    localStorage.setItem("proEmail", email);
+    const url = `${PAYMENT_URLS[upgradePlan]}?prefilled_email=${encodeURIComponent(email)}`;
+    window.location.href = url;
+  };
+
+  const handleVerifyAccess = () => {
+    if (!upgradeEmail.trim()) return;
+    const email = upgradeEmail.toLowerCase().trim();
+    localStorage.setItem("proEmail", email);
+    setVerifyError("");
+    fetch(`/api/license?email=${encodeURIComponent(email)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.tier === "pro") {
+          setUser((prev) => prev ? { ...prev, isPro: true } : { id: 0, email, isPro: true });
+          setShowUpgrade(false);
+        } else {
+          setVerifyError("No active Pro subscription found for this email. If you just purchased, it may take a moment to process.");
+        }
+      })
+      .catch(() => setVerifyError("Failed to verify access. Please try again."));
   };
 
   const handleLogout = async () => {
@@ -288,7 +325,7 @@ export default function SignatureEditor() {
                     onClick={handleUpgrade}
                     className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
                   >
-                    Upgrade to Pro — $39/year
+                    Upgrade to Pro — $29.99/year
                   </button>
                 </div>
               )}
@@ -437,6 +474,79 @@ export default function SignatureEditor() {
           </div>
         </div>
       </main>
+
+      {showUpgrade && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">Upgrade to Pro</h2>
+              <button onClick={() => setShowUpgrade(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">
+              Unlock {allTemplates.filter((t) => t.pro).length} Pro templates, saved signatures, team management, and more.
+            </p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <input
+                type="email"
+                value={upgradeEmail}
+                onChange={(e) => setUpgradeEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button
+                onClick={() => setUpgradePlan("yearly")}
+                className={`flex-1 rounded-lg border-2 p-3 text-left text-sm ${
+                  upgradePlan === "yearly"
+                    ? "border-indigo-600 bg-indigo-50"
+                    : "border-gray-200"
+                }`}
+              >
+                <div className="font-semibold text-gray-900">$29.99/year</div>
+                <div className="text-xs text-gray-500">Save 37%</div>
+              </button>
+              <button
+                onClick={() => setUpgradePlan("monthly")}
+                className={`flex-1 rounded-lg border-2 p-3 text-left text-sm ${
+                  upgradePlan === "monthly"
+                    ? "border-indigo-600 bg-indigo-50"
+                    : "border-gray-200"
+                }`}
+              >
+                <div className="font-semibold text-gray-900">$3.99/month</div>
+                <div className="text-xs text-gray-500">Flexible</div>
+              </button>
+            </div>
+            {verifyError && (
+              <p className="mt-3 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{verifyError}</p>
+            )}
+            <div className="mt-6 flex gap-2">
+              <button
+                onClick={() => setShowUpgrade(false)}
+                className="flex-1 rounded-lg border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCheckout}
+                disabled={!upgradeEmail.trim()}
+                className="flex-1 rounded-lg bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              >
+                Continue to Payment
+              </button>
+            </div>
+            <button
+              onClick={handleVerifyAccess}
+              disabled={!upgradeEmail.trim()}
+              className="mt-3 w-full text-center text-sm text-indigo-600 hover:underline disabled:opacity-50"
+            >
+              Already purchased? Verify access
+            </button>
+          </div>
+        </div>
+      )}
 
       {showAuth && (
         <AuthModal
