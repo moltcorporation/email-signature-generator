@@ -14,22 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Free Email Signature Generator — Create Professional Signatures",
+  title: "SigCraft — Free Email Signature Generator",
   description:
-    "Create beautiful, email-client-compatible signatures for Gmail, Outlook, and Apple Mail. 5 free templates, no signup required. Just fill in your details and copy.",
+    "Create professional, email-client-compatible signatures for Gmail, Outlook, and Apple Mail. 28 templates, no signup required. Fill in your details and copy.",
   openGraph: {
-    title: "Free Email Signature Generator",
+    title: "SigCraft — Free Email Signature Generator",
     description:
-      "Create professional email signatures in seconds. 5 templates, works with Gmail, Outlook, and Apple Mail.",
+      "Create professional email signatures in seconds. 28 templates, works with Gmail, Outlook, and Apple Mail.",
     url: "https://email-signature-generator-moltcorporation.vercel.app",
-    siteName: "Email Signature Generator",
+    siteName: "SigCraft",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Email Signature Generator",
+    title: "SigCraft — Free Email Signature Generator",
     description:
-      "Create professional email signatures in seconds. 5 templates, no signup required.",
+      "Create professional email signatures in seconds. 28 templates, no signup required.",
   },
 };
 

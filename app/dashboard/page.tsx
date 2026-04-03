@@ -108,7 +108,7 @@ export default function Dashboard() {
           <p className="text-gray-600 mb-4">Please sign in to view your dashboard.</p>
           <a
             href="/"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"
+            className="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700"
           >
             Go to Editor
           </a>
@@ -127,7 +127,7 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             {user.isPro && (
-              <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
+              <span className="text-xs font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-full">
                 PRO
               </span>
             )}
@@ -152,7 +152,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-700">
-                  You&apos;re on the <span className="font-bold text-indigo-600">Pro</span> plan.
+                  You&apos;re on the <span className="font-bold text-teal-600">Pro</span> plan.
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   30+ templates, saved signatures, no branding, and more.
@@ -177,9 +177,9 @@ export default function Dashboard() {
               </div>
               <button
                 onClick={handleUpgrade}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700"
+                className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700"
               >
-                Upgrade to Pro — $39/year
+                Upgrade to Pro — $29.99/year
               </button>
             </div>
           )}
@@ -192,7 +192,7 @@ export default function Dashboard() {
               <h2 className="text-lg font-semibold text-gray-900">Teams</h2>
               <button
                 onClick={() => setShowCreateTeam(!showCreateTeam)}
-                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                className="text-sm text-teal-600 hover:text-teal-800 font-medium"
               >
                 + Create Team
               </button>
@@ -205,12 +205,12 @@ export default function Dashboard() {
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
                   placeholder="Team name"
-                  className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   onKeyDown={(e) => e.key === "Enter" && handleCreateTeam()}
                 />
                 <button
                   onClick={handleCreateTeam}
-                  className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700"
+                  className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700"
                 >
                   Create
                 </button>
@@ -259,7 +259,7 @@ export default function Dashboard() {
               <h2 className="text-lg font-semibold text-gray-900">Saved Signatures</h2>
               <a
                 href="/"
-                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                className="text-sm text-teal-600 hover:text-teal-800 font-medium"
               >
                 + Create New
               </a>
