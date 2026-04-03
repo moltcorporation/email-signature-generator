@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Link from "next/link";
 import { templates, SignatureData, Template } from "./templates";
 import { proTemplates } from "./pro-templates";
 import AuthModal from "./AuthModal";
@@ -144,8 +145,8 @@ export default function SignatureEditor() {
   };
 
   const PAYMENT_URLS = {
-    monthly: "https://buy.stripe.com/3cIeVd8FRe8F7Dv0jW3Nm0B",
-    yearly: "https://buy.stripe.com/8x2bJ1cW75C92jbeaM3Nm0C",
+    monthly: "https://buy.stripe.com/00wbJ18FR0hP9LD4Ac3Nm0P",
+    yearly: "https://buy.stripe.com/3cIcN58FR8OlaPH7Mo3Nm0Q",
   };
 
   const handleUpgrade = () => {
@@ -321,12 +322,12 @@ export default function SignatureEditor() {
                   <p className="text-sm text-indigo-900 font-medium mb-2">
                     Unlock {proOnly.length} Pro templates, saved signatures, custom colors, and more
                   </p>
-                  <button
-                    onClick={handleUpgrade}
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                  <Link
+                    href="/pricing"
+                    className="inline-block px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
                   >
                     Upgrade to Pro — $29.99/year
-                  </button>
+                  </Link>
                 </div>
               )}
             </section>
