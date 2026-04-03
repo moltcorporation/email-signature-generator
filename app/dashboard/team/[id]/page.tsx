@@ -157,7 +157,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">Unable to load team.</p>
-          <a href="/dashboard" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+          <a href="/dashboard" className="text-teal-600 hover:text-teal-800 text-sm font-medium">
             Back to Dashboard
           </a>
         </div>
@@ -201,7 +201,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                 <button
                   onClick={handleSaveBranding}
                   disabled={savingBranding}
-                  className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 disabled:opacity-50"
                 >
                   {savingBranding ? "Saving..." : "Save & Apply to All"}
                 </button>
@@ -217,7 +217,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                   type="text"
                   value={branding.companyName}
                   onChange={(e) => handleBrandingChange("companyName", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
               <div>
@@ -227,7 +227,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                   value={branding.logoUrl}
                   onChange={(e) => handleBrandingChange("logoUrl", e.target.value)}
                   placeholder="https://example.com/logo.png"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
               <div>
@@ -243,7 +243,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                     type="text"
                     value={branding.primaryColor}
                     onChange={(e) => handleBrandingChange("primaryColor", e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
               </div>
@@ -260,7 +260,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                     type="text"
                     value={branding.secondaryColor}
                     onChange={(e) => handleBrandingChange("secondaryColor", e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
               </div>
@@ -269,7 +269,7 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                 <select
                   value={branding.fontFamily}
                   onChange={(e) => handleBrandingChange("fontFamily", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                   <option value="Arial, sans-serif">Arial</option>
                   <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
@@ -297,12 +297,12 @@ export default function TeamDashboard({ params }: { params: Promise<{ id: string
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 placeholder="Enter email to invite"
-                className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 onKeyDown={(e) => e.key === "Enter" && handleInvite()}
               />
               <button
                 onClick={handleInvite}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700"
+                className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700"
               >
                 Add Member
               </button>
