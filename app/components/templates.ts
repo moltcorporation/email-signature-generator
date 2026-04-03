@@ -1,4 +1,4 @@
-function escapeHtml(str: string): string {
+export function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -7,7 +7,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function sanitizeUrl(url: string): string {
+export function sanitizeUrl(url: string): string {
   const trimmed = url.trim();
   if (/^https?:\/\//i.test(trimmed)) return escapeHtml(trimmed);
   if (/^mailto:/i.test(trimmed)) return escapeHtml(trimmed);

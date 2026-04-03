@@ -1,4 +1,4 @@
-import { SignatureData, Template } from "./templates";
+import { SignatureData, Template, sanitizeUrl, escapeHtml } from "./templates";
 
 function socialIconsHtml(data: SignatureData, color: string): string {
   const links: { url: string; label: string }[] = [];
@@ -8,16 +8,20 @@ function socialIconsHtml(data: SignatureData, color: string): string {
   if (data.instagram) links.push({ url: data.instagram, label: "Instagram" });
   if (links.length === 0) return "";
   return links
-    .map(
-      (l) =>
-        `<a href="${l.url}" style="color:${color};text-decoration:none;font-size:12px;margin-right:10px;" target="_blank">${l.label}</a>`
-    )
+    .map((l) => {
+      const safeUrl = sanitizeUrl(l.url);
+      if (!safeUrl) return "";
+      return `<a href="${safeUrl}" style="color:${color};text-decoration:none;font-size:12px;margin-right:10px;" target="_blank">${l.label}</a>`;
+    })
+    .filter(Boolean)
     .join("");
 }
 
 function photoHtml(url: string, size: number, borderRadius: string = "50%"): string {
   if (!url) return "";
-  return `<img src="${url}" alt="Photo" width="${size}" height="${size}" style="border-radius:${borderRadius};display:block;" />`;
+  const safeUrl = sanitizeUrl(url);
+  if (!safeUrl) return "";
+  return `<img src="${safeUrl}" alt="Photo" width="${size}" height="${size}" style="border-radius:${borderRadius};display:block;" />`;
 }
 
 // Pro templates have no moltcorp branding
