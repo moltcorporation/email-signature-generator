@@ -196,34 +196,41 @@ export default function SignatureEditor() {
   const proOnly = allTemplates.filter((t) => t.pro);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-slate-50">
+      <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Email Signature Generator
-            </h1>
-            <p className="text-sm text-gray-500 mt-0.5">
-              Create professional email signatures in seconds
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">
+                Email Signature Generator
+              </h1>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Professional signatures in seconds
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             {user ? (
               <>
                 {user.isPro && (
-                  <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
-                    PRO
+                  <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full border border-amber-200">
+                    ✨ PRO
                   </span>
                 )}
                 <a
                   href="/dashboard"
-                  className="text-sm text-gray-600 hover:text-gray-900"
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Dashboard
                 </a>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
                 >
                   Sign out
                 </button>
@@ -232,13 +239,13 @@ export default function SignatureEditor() {
               <>
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="text-sm text-gray-600 hover:text-gray-900"
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Sign in
                 </button>
                 <button
                   onClick={handleUpgrade}
-                  className="px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                  className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Upgrade to Pro
                 </button>
@@ -249,30 +256,53 @@ export default function SignatureEditor() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Hero Section with Example Signature */}
+        <div className="mb-8 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-8 text-white">
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Create a Professional Signature</h2>
+              <p className="text-slate-300">Choose a template, fill in your details, copy the HTML. It's that simple.</p>
+            </div>
+            <svg className="w-12 h-12 text-blue-400 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+              <path d="m18 8.118-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+            </svg>
+          </div>
+          <div className="bg-slate-800 bg-opacity-50 border border-slate-700 rounded-lg p-4 text-sm font-mono text-slate-300 overflow-x-auto">
+            <div className="whitespace-nowrap">
+              <span className="text-amber-400">From:</span> alex@company.com<br/>
+              <span className="text-amber-400">Subject:</span> Project Update<br/><br/>
+              <span className="text-slate-400">---</span><br/>
+              <span className="font-semibold">Alex Johnson</span><br/>
+              Product Designer | Acme Corp<br/>
+              alex@company.com | 555-123-4567<br/>
+              www.acmecorp.com
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Editor */}
           <div className="space-y-6">
             {/* Free Templates */}
             <section>
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">
+              <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
                 Free Templates
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {freeTemplates.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => handleTemplateSelect(t)}
-                    className={`px-3 py-2.5 rounded-lg border text-left transition-all ${
+                    className={`px-4 py-3 rounded-xl border-2 text-left transition-all font-medium ${
                       templateId === t.id
-                        ? "border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500"
-                        : "border-gray-200 bg-white hover:border-gray-300"
+                        ? "border-blue-600 bg-blue-50 text-blue-900 shadow-md"
+                        : "border-slate-200 bg-white text-slate-900 hover:border-blue-400 hover:shadow-sm"
                     }`}
                   >
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm">
                       {t.name}
-                    </span>
-                    <span className="block text-xs text-gray-500 mt-0.5">
-                      {t.description}
                     </span>
                   </button>
                 ))}
@@ -282,32 +312,30 @@ export default function SignatureEditor() {
             {/* Pro Templates */}
             <section>
               <div className="flex items-center gap-2 mb-3">
-                <h2 className="text-sm font-semibold text-gray-700">
+                <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-amber-500 rounded-full"></span>
                   Pro Templates
                 </h2>
-                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">
-                  {proOnly.length} templates
+                <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                  ✨ {proOnly.length}
                 </span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {proOnly.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => handleTemplateSelect(t)}
-                    className={`px-3 py-2.5 rounded-lg border text-left transition-all relative ${
+                    className={`px-4 py-3 rounded-xl border-2 text-left transition-all font-medium relative ${
                       templateId === t.id
-                        ? "border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500"
-                        : "border-gray-200 bg-white hover:border-gray-300"
+                        ? "border-amber-500 bg-amber-50 text-amber-900 shadow-md"
+                        : "border-slate-200 bg-white text-slate-900 hover:border-amber-400 hover:shadow-sm"
                     }`}
                   >
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm">
                       {t.name}
                     </span>
-                    <span className="block text-xs text-gray-500 mt-0.5">
-                      {t.description}
-                    </span>
                     {!user?.isPro && (
-                      <span className="absolute top-2 right-2 text-xs text-indigo-500">
+                      <span className="absolute top-3 right-3 text-amber-600">
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                         </svg>
@@ -317,15 +345,18 @@ export default function SignatureEditor() {
                 ))}
               </div>
               {!user?.isPro && (
-                <div className="mt-3 bg-indigo-50 border border-indigo-100 rounded-lg p-4 text-center">
-                  <p className="text-sm text-indigo-900 font-medium mb-2">
-                    Unlock {proOnly.length} Pro templates, saved signatures, custom colors, and more
+                <div className="mt-4 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-4 text-center">
+                  <p className="text-sm text-amber-900 font-semibold mb-3">
+                    🎁 Unlock Premium Features
+                  </p>
+                  <p className="text-xs text-amber-800 mb-3">
+                    {proOnly.length} Pro templates, saved signatures, team collaboration, and more
                   </p>
                   <button
                     onClick={handleUpgrade}
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold rounded-lg hover:shadow-lg transition-all"
                   >
-                    Upgrade to Pro — $29.99/year
+                    Upgrade to Pro — $2.99/mo
                   </button>
                 </div>
               )}
@@ -333,15 +364,16 @@ export default function SignatureEditor() {
 
             {/* Fields */}
             <section>
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">
+              <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
                 Your Details
               </h2>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+              <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4 shadow-sm">
                 {mainFields.map((field) => (
                   <div key={field}>
                     <label
                       htmlFor={field}
-                      className="block text-xs font-medium text-gray-600 mb-1"
+                      className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide"
                     >
                       {fieldLabels[field]}
                     </label>
@@ -357,7 +389,7 @@ export default function SignatureEditor() {
                           ? "https://example.com"
                           : ""
                       }
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-slate-50 hover:bg-white transition-colors"
                     />
                   </div>
                 ))}
@@ -368,7 +400,7 @@ export default function SignatureEditor() {
             <section>
               <button
                 onClick={() => setShowSocials(!showSocials)}
-                className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 hover:text-gray-900"
+                className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3 hover:text-slate-900 transition-colors"
               >
                 <svg
                   className={`w-4 h-4 transition-transform ${
@@ -385,15 +417,16 @@ export default function SignatureEditor() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
+                <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
                 Social Links
               </button>
               {showSocials && (
-                <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+                <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4 shadow-sm">
                   {socialFields.map((field) => (
                     <div key={field}>
                       <label
                         htmlFor={field}
-                        className="block text-xs font-medium text-gray-600 mb-1"
+                        className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide"
                       >
                         {fieldLabels[field]}
                       </label>
@@ -403,7 +436,7 @@ export default function SignatureEditor() {
                         value={data[field]}
                         onChange={handleChange(field)}
                         placeholder={`https://${field === "twitter" ? "x.com" : field + ".com"}/username`}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-slate-50 hover:bg-white transition-colors"
                       />
                     </div>
                   ))}
@@ -415,7 +448,7 @@ export default function SignatureEditor() {
           {/* Right: Preview + Copy */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-700">
+              <h2 className="text-sm font-semibold text-slate-700">
                 Live Preview
               </h2>
               <div className="flex items-center gap-2">
@@ -423,51 +456,51 @@ export default function SignatureEditor() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="px-4 py-2 rounded-lg text-sm font-medium border border-indigo-200 text-indigo-600 hover:bg-indigo-50 transition-all disabled:opacity-50"
+                    className="px-4 py-2 rounded-lg text-sm font-medium border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all disabled:opacity-50"
                   >
                     {saveMsg || (saving ? "Saving..." : "Save")}
                   </button>
                 )}
                 <button
                   onClick={handleCopy}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm ${
                     copied
-                      ? "bg-green-600 text-white"
-                      : "bg-indigo-600 text-white hover:bg-indigo-700"
+                      ? "bg-emerald-600 text-white shadow-lg"
+                      : "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md"
                   }`}
                 >
-                  {copied ? "Copied!" : "Copy HTML"}
+                  {copied ? "✓ Copied!" : "📋 Copy HTML"}
                 </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-6 min-h-[200px]">
+            <div className="bg-white rounded-xl border border-slate-200 p-6 min-h-[240px] shadow-sm">
+              <div className="text-slate-600 text-xs mb-3">Your signature preview:</div>
               <div
                 ref={previewRef}
+                className="text-sm"
                 dangerouslySetInnerHTML={{ __html: signatureHtml }}
               />
             </div>
 
-            <div className="bg-gray-100 rounded-lg p-4">
-              <h3 className="text-xs font-semibold text-gray-600 mb-2">
-                How to use
+            <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-xl p-4 border border-blue-100">
+              <h3 className="text-xs font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0zM8 7a1 1 0 000 2h6a1 1 0 000-2H8zm0 4a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
+                Quick Start
               </h3>
-              <ol className="text-xs text-gray-500 space-y-1.5 list-decimal list-inside">
-                <li>Fill in your details and choose a template</li>
-                <li>Click &quot;Copy HTML&quot; to copy your signature</li>
-                <li>
-                  Open your email settings (Gmail: Settings &rarr; Signature)
-                </li>
-                <li>Paste the signature into the signature editor</li>
+              <ol className="text-xs text-blue-800 space-y-1.5 list-decimal list-inside">
+                <li>Fill in your details</li>
+                <li>Click &quot;Copy HTML&quot;</li>
+                <li>Paste into your email settings</li>
               </ol>
             </div>
 
             {/* Raw HTML Preview */}
-            <details className="bg-white rounded-lg border border-gray-200">
-              <summary className="px-4 py-3 text-xs font-semibold text-gray-600 cursor-pointer hover:bg-gray-50">
+            <details className="bg-white rounded-xl border border-slate-200 shadow-sm">
+              <summary className="px-4 py-3 text-xs font-semibold text-slate-600 cursor-pointer hover:bg-slate-50 transition-colors">
                 View HTML Source
               </summary>
-              <pre className="px-4 pb-4 text-xs text-gray-500 overflow-x-auto whitespace-pre-wrap break-all">
+              <pre className="px-4 pb-4 text-xs text-slate-500 overflow-x-auto whitespace-pre-wrap break-all bg-slate-50 rounded-b-lg">
                 {signatureHtml}
               </pre>
             </details>
@@ -477,46 +510,51 @@ export default function SignatureEditor() {
 
       {showUpgrade && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Upgrade to Pro</h2>
-              <button onClick={() => setShowUpgrade(false)} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+          <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">Upgrade to Pro</h2>
+                <p className="text-sm text-slate-500 mt-1">Unlock premium features</p>
+              </div>
+              <button onClick={() => setShowUpgrade(false)} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
             </div>
-            <p className="text-sm text-gray-500 mb-4">
-              Unlock {allTemplates.filter((t) => t.pro).length} Pro templates, saved signatures, team management, and more.
-            </p>
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-4 border border-amber-200">
+              <p className="text-sm text-amber-900 font-semibold">
+                ✨ {allTemplates.filter((t) => t.pro).length} Pro templates + saved signatures + team collaboration
+              </p>
+            </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Email address</label>
               <input
                 type="email"
                 value={upgradeEmail}
                 onChange={(e) => setUpgradeEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <div className="mt-4 flex gap-3">
+            <div className="mt-6 space-y-2">
               <button
                 onClick={() => setUpgradePlan("yearly")}
-                className={`flex-1 rounded-lg border-2 p-3 text-left text-sm ${
+                className={`w-full rounded-lg border-2 p-3 text-left text-sm transition-all ${
                   upgradePlan === "yearly"
-                    ? "border-indigo-600 bg-indigo-50"
-                    : "border-gray-200"
+                    ? "border-amber-500 bg-amber-50 shadow-md"
+                    : "border-slate-200 hover:border-amber-300"
                 }`}
               >
-                <div className="font-semibold text-gray-900">$29.99/year</div>
-                <div className="text-xs text-gray-500">Save 37%</div>
+                <div className="font-semibold text-slate-900">💰 $2.99/month (yearly)</div>
+                <div className="text-xs text-slate-600">Save 37% vs monthly</div>
               </button>
               <button
                 onClick={() => setUpgradePlan("monthly")}
-                className={`flex-1 rounded-lg border-2 p-3 text-left text-sm ${
+                className={`w-full rounded-lg border-2 p-3 text-left text-sm transition-all ${
                   upgradePlan === "monthly"
-                    ? "border-indigo-600 bg-indigo-50"
-                    : "border-gray-200"
+                    ? "border-amber-500 bg-amber-50 shadow-md"
+                    : "border-slate-200 hover:border-amber-300"
                 }`}
               >
-                <div className="font-semibold text-gray-900">$3.99/month</div>
-                <div className="text-xs text-gray-500">Flexible</div>
+                <div className="font-semibold text-slate-900">$2.99/month</div>
+                <div className="text-xs text-slate-600">Cancel anytime</div>
               </button>
             </div>
             {verifyError && (
@@ -525,14 +563,14 @@ export default function SignatureEditor() {
             <div className="mt-6 flex gap-2">
               <button
                 onClick={() => setShowUpgrade(false)}
-                className="flex-1 rounded-lg border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="flex-1 rounded-lg border border-slate-300 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCheckout}
                 disabled={!upgradeEmail.trim()}
-                className="flex-1 rounded-lg bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                className="flex-1 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 py-2.5 text-sm font-semibold text-white hover:shadow-lg transition-all disabled:opacity-50"
               >
                 Continue to Payment
               </button>
@@ -540,7 +578,7 @@ export default function SignatureEditor() {
             <button
               onClick={handleVerifyAccess}
               disabled={!upgradeEmail.trim()}
-              className="mt-3 w-full text-center text-sm text-indigo-600 hover:underline disabled:opacity-50"
+              className="mt-3 w-full text-center text-sm text-blue-600 hover:text-blue-700 hover:underline disabled:opacity-50 transition-colors"
             >
               Already purchased? Verify access
             </button>
