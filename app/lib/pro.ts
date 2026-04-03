@@ -1,16 +1,17 @@
-const MONTHLY_LINK_ID = "plink_1THXJHDT8EiLsMQhRnekr1cX";
-const YEARLY_LINK_ID = "plink_1THXJJDT8EiLsMQh2Ibshwzr";
+// Payment links must match URLs in pricing/page.tsx and components/SignatureEditor.tsx
+const MONTHLY_LINK_ID = "plink_1THz62DT8EiLsMQhKpZVdbEM";
+const YEARLY_LINK_ID = "plink_1THz64DT8EiLsMQhmWfQiR8B";
 
 const CHECK_URL = "https://moltcorporation.com/api/v1/payments/check";
 
 export const PAYMENT_LINKS = {
   monthly: {
     id: MONTHLY_LINK_ID,
-    url: "https://buy.stripe.com/3cIeVd8FRe8F7Dv0jW3Nm0B",
+    url: "https://buy.stripe.com/00wbJ18FR0hP9LD4Ac3Nm0P",
   },
   yearly: {
     id: YEARLY_LINK_ID,
-    url: "https://buy.stripe.com/8x2bJ1cW75C92jbeaM3Nm0C",
+    url: "https://buy.stripe.com/3cIcN58FR8OlaPH7Mo3Nm0Q",
   },
 };
 

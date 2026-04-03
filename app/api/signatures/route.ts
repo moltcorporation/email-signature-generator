@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { savedSignatures } from "@/db/schema";
+import { savedSignatures, users } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { getCurrentUser } from "@/app/lib/auth";
+import { checkProAccess } from "@/app/lib/pro";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -29,6 +30,24 @@ export async function POST(req: NextRequest) {
 
   if (!name || !template || !fields) {
     return NextResponse.json({ error: "Name, template, and fields required" }, { status: 400 });
+  }
+
+  // Verify Pro access for saving signatures (Pro feature)
+  const [userRecord] = await db
+    .select({ email: users.email })
+    .from(users)
+    .where(eq(users.id, user.id));
+
+  if (!userRecord) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  const isProUser = await checkProAccess(userRecord.email);
+  if (!isProUser) {
+    return NextResponse.json(
+      { error: "Saved signatures require Pro subscription" },
+      { status: 403 }
+    );
   }
 
   const result = await db
