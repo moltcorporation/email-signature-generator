@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { templates, SignatureData, Template } from "./templates";
 import { proTemplates } from "./pro-templates";
+import { PAYMENT_LINKS } from "../lib/pro";
 import AuthModal from "./AuthModal";
 import Link from "next/link";
 
@@ -155,8 +156,8 @@ export default function SignatureEditor() {
   };
 
   const PAYMENT_URLS = {
-    monthly: "https://buy.stripe.com/00wbJ18FR0hP9LD4Ac3Nm0P",
-    yearly: "https://buy.stripe.com/3cIcN58FR8OlaPH7Mo3Nm0Q",
+    monthly: PAYMENT_LINKS.monthly.url,
+    yearly: PAYMENT_LINKS.yearly.url,
   };
 
   const handleUpgrade = () => {
