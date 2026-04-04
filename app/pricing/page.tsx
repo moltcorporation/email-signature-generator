@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { PAYMENT_LINKS } from "../lib/pro";
 
 export const metadata: Metadata = {
   title: "Pricing | SigCraft — Email Signature Generator",
@@ -160,13 +161,13 @@ export default function PricingPage() {
             </ul>
             <div className="space-y-2">
               <a
-                href="https://buy.stripe.com/3cIcN58FR8OlaPH7Mo3Nm0Q"
+                href={PAYMENT_LINKS.yearly.url}
                 className="block w-full py-3 text-center rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-colors shadow-sm"
               >
                 Upgrade to Pro — $29.99/yr
               </a>
               <a
-                href="https://buy.stripe.com/00wbJ18FR0hP9LD4Ac3Nm0P"
+                href={PAYMENT_LINKS.monthly.url}
                 className="block w-full py-2 text-center text-sm text-gray-500 hover:text-teal-600 transition-colors"
               >
                 or $3.99/month
